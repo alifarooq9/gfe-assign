@@ -1,5 +1,5 @@
 import { mock } from "@/config/mock-data";
-import { Task } from "@/types/task";
+import { createTaskSchema, Task } from "@/types/task";
 import { z } from "zod";
 
 const getTasksSchema = z.object({
@@ -140,5 +140,48 @@ export function getTasks(
     success: true,
     maxPage,
     tasks: paginatedTasks,
+  };
+}
+
+export function addTask(params: z.infer<typeof createTaskSchema>):
+  | {
+      success: true;
+      task: Task;
+    }
+  | {
+      success: false;
+      message: string;
+    } {
+  // Validate the incoming parameters
+  const validated = createTaskSchema.safeParse(params);
+  if (!validated.success) {
+    return {
+      success: false,
+      message: `${validated.error.issues[0]?.path[0]} - ${validated.error.issues[0]?.message}`,
+    };
+  }
+  const { title, priority, status, customFields } = validated.data;
+
+  const tasks =
+    localStorage.getItem("tasks") !== null && localStorage.getItem("tasks")
+      ? JSON.parse(localStorage.getItem("tasks")!)
+      : mock;
+
+  // Create a new task object
+  const task: Task = {
+    id: tasks.length + 1,
+    title,
+    priority,
+    status,
+    createdAt: new Date(),
+    customFields,
+  };
+
+  // Save the task to localStorage
+  localStorage.setItem("tasks", JSON.stringify([...tasks, task]));
+
+  return {
+    success: true,
+    task,
   };
 }

@@ -39,33 +39,8 @@ import {
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-
-export const createTaskSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 character long",
-  }),
-  priority: z
-    .enum(["low", "medium", "high", "urgent", "none"], {
-      message:
-        "Priority must be one of the following: low, medium, high, urgent, none",
-    })
-    .default("none"),
-  status: z
-    .enum(["not_started", "in_progress", "completed"], {
-      message:
-        "Status must be one of the following: not_started, in_progress, completed",
-    })
-    .default("not_started"),
-  customFields: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Field name is required"),
-        type: z.enum(["text", "number", "checkbox", "dateTime"]),
-        value: z.union([z.string(), z.number(), z.boolean(), z.date()]),
-      })
-    )
-    .optional(),
-});
+import { createTaskSchema } from "@/types/task";
+import { addTask } from "@/app/_lib/actions";
 
 export default function AddTasksSheet() {
   const router = useRouter();
@@ -86,7 +61,7 @@ export default function AddTasksSheet() {
 
   const { mutateAsync: createTaskTrigger, isPending } = useMutation({
     mutationFn: async (data: z.infer<typeof createTaskSchema>) => {
-      return true;
+      return addTask(data);
     },
     onSuccess: () => {
       console.log("success");
