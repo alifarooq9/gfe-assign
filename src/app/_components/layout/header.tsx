@@ -1,4 +1,4 @@
-import { HeaderNav } from "@/app/_components/header-nav";
+import { HeaderNav } from "@/app/_components/layout/header-nav";
 import { SITE_URLS } from "@/config/site-urls";
 import Link from "next/link";
 

@@ -1,4 +1,6 @@
-export const mock = [
+import { Task } from "@/types/task";
+
+export const tasksWithoutCreatedAt = [
   {
     id: 1,
     title: "Write project proposal",
@@ -677,4 +679,15 @@ export const mock = [
     status: "not_started",
     priority: "high",
   },
-];
+] as const;
+
+const getRandomDate = (start: Date, end: Date): Date => {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+};
+
+export const mock: Task[] = tasksWithoutCreatedAt.map((task) => ({
+  ...task,
+  createdAt: getRandomDate(new Date(2020, 0, 1), new Date()).toISOString(),
+}));
