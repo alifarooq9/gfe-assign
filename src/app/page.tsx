@@ -1,3 +1,4 @@
+import AddTasksSheet from "@/app/_components/add-task-sheet";
 import { TasksTable } from "@/app/_components/table/tasks-table";
 
 type HomeProps = {
@@ -17,7 +18,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </span>
         </h1>
 
-        {/* <AddTasksSheet /> */}
+        <AddTasksSheet />
       </div>
       <TasksTable
         searchParams={{

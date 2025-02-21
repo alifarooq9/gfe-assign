@@ -6,11 +6,6 @@ type DataTableSearchFilterProps = {
   searchFilterAccessor: string;
 };
 
-export type SearchParam = {
-  searchAccessor: string;
-  value: string;
-};
-
 export function DataTableSearchFilter({
   searchFilterAccessor,
 }: DataTableSearchFilterProps) {

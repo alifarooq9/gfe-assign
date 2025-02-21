@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  DEFAULTROWSSIZE,
-  type RowSize,
-} from "@/components/data-table/data-table";
+import { DEFAULTROWSSIZE } from "@/components/data-table/data-table";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -12,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RowSize } from "@/types/date-table";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

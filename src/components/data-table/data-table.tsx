@@ -21,7 +21,6 @@ type DataTableProps<T> = {
 };
 
 export const DEFAULTROWSSIZE = [10, 20, 30, 40, 50] as const;
-export type RowSize = (typeof DEFAULTROWSSIZE)[number];
 
 export function DataTable<T>({
   columns,
