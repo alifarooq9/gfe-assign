@@ -3,11 +3,11 @@
 import { taskColumns } from "@/app/_components/table/tasks-columns";
 import { getAllCustomFields, getTasks } from "@/app/_lib/actions";
 import { DataTable } from "@/components/data-table/data-table";
-import { Column, RowSize, SearchParam } from "@/types/date-table";
+import { Column, FilterParam, RowSize, SearchParam } from "@/types/date-table";
 import { Task } from "@/types/task";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 type TableViewProps = {
   searchParams: {
@@ -15,14 +15,13 @@ type TableViewProps = {
     rowSize: string;
     sortBy: string;
     search: string;
+    filter: string;
   };
 };
 
 export function TasksTable({ searchParams }: TableViewProps) {
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      `tasks-table-${searchParams.page}-${searchParams.rowSize}-${searchParams.sortBy}-${searchParams.search}`,
-    ],
+  const { data, isPending, refetch } = useQuery({
+    queryKey: [`tasks-table`],
     queryFn: () => {
       const tasksResponse = getTasks({
         page: searchParams.page ? Number(searchParams.page) : undefined,
@@ -32,6 +31,9 @@ export function TasksTable({ searchParams }: TableViewProps) {
         sortBy: searchParams.sortBy ? searchParams.sortBy : undefined,
         search: searchParams.search
           ? (JSON.parse(searchParams.search) as SearchParam)
+          : undefined,
+        filter: searchParams.filter
+          ? (JSON.parse(searchParams.filter) as FilterParam[])
           : undefined,
       });
 
@@ -88,14 +90,21 @@ export function TasksTable({ searchParams }: TableViewProps) {
       customSortAccessor: `customFields.${c.name}`,
       sortable: c.sortable,
       filterable: c.filterable,
+      facetedFilterValues: c.values.map((value) => ({
+        value,
+        label: value,
+      })),
     }));
 
     return [...taskColumns, ...customColumns];
   }, [data]);
 
-  console.log(data);
+  //refetch
+  useEffect(() => {
+    if (!isPending) refetch();
+  }, [searchParams]);
 
-  if (isLoading) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 
@@ -108,6 +117,7 @@ export function TasksTable({ searchParams }: TableViewProps) {
       data={data?.tasks as Task[]}
       columns={columns}
       maxPage={data?.maxPage as number}
+      searchFilterAccessor="title"
     />
   );
 }

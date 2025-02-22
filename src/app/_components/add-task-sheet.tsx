@@ -13,6 +13,7 @@ import {
   Loader2Icon,
   PencilIcon,
   PlusCircleIcon,
+  PlusIcon,
   Trash2Icon,
 } from "lucide-react";
 import { z } from "zod";
@@ -87,9 +88,8 @@ export default function AddTasksSheet() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button type="button" size="sm">
-          <PlusCircleIcon className="h-3.5 w-3.5" />
-          Add Task
+        <Button type="button" size="icon">
+          <PlusIcon />
         </Button>
       </SheetTrigger>
       <SheetContent className="w-[calc(100%-2rem)] sm:max-w-[36rem]">
@@ -375,7 +375,7 @@ export default function AddTasksSheet() {
                         control={form.control}
                         name={`customFields.${index}.sortable`}
                         render={({ field }) => (
-                          <FormItem className="flex space-y-0 items-center justify-between border border-border p-3 h-10 rounded-md">
+                          <FormItem className="flex space-y-0 items-center justify-between border border-border p-3 h-9 rounded-md">
                             <FormLabel>Sortable</FormLabel>
                             <FormControl>
                               <Switch
@@ -392,7 +392,7 @@ export default function AddTasksSheet() {
                         control={form.control}
                         name={`customFields.${index}.filterable`}
                         render={({ field }) => (
-                          <FormItem className="flex space-y-0 items-center justify-between border border-border px-3 h-10 rounded-md">
+                          <FormItem className="flex space-y-0 items-center justify-between border border-border px-3 h-9 rounded-md">
                             <FormLabel>Filterable</FormLabel>
                             <FormControl>
                               <Switch

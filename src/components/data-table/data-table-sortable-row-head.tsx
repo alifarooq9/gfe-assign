@@ -1,4 +1,3 @@
-import { type Column } from "@/components/data-table/data-table";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { TableHead } from "@/components/ui/table";
+import { Column } from "@/types/date-table";
 
 type SortableRowHeadProps<T> = {
   column: Column<T>;
@@ -33,7 +33,9 @@ export function DataTableSortableRowHead<T>({
   const handleSort = (column: Column<T>, direction: "asc" | "desc") => {
     params.set(
       "sortBy",
-      `${(column.customSortAccessor ?? column.accessor).toString()}.${direction}`,
+      `${(
+        column.customSortAccessor ?? column.accessor
+      ).toString()}.${direction}`
     );
     router.push(`${pathname}?${params.toString()}`);
   };

@@ -11,7 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTableSearchFilter } from "@/components/data-table/data-table-search-filter";
-import { Column } from "@/types/date-table";
+import { Column, FacetedFilterValues } from "@/types/date-table";
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 
 type DataTableProps<T> = {
   columns: Column<T>[];
@@ -31,11 +32,24 @@ export function DataTable<T>({
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-between gap-4">
-        {searchFilterAccessor && (
-          <DataTableSearchFilter
-            searchFilterAccessor={searchFilterAccessor as string}
-          />
-        )}
+        <div className="flex items-center gap-2">
+          {searchFilterAccessor && (
+            <DataTableSearchFilter
+              searchFilterAccessor={searchFilterAccessor as string}
+            />
+          )}
+
+          {columns
+            .filter((c) => c.filterable === true)
+            .map((c, index) => (
+              <DataTableFacetedFilter
+                key={index}
+                column={c}
+                title={c.header}
+                options={c.facetedFilterValues as FacetedFilterValues[]}
+              />
+            ))}
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-md border border-border">

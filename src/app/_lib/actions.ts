@@ -2,7 +2,7 @@ import { mock } from "@/config/mock-data";
 import { createTaskSchema, CustomField, Task } from "@/types/task";
 import { z } from "zod";
 
-const getTasksSchema = z.object({
+export const getTasksSchema = z.object({
   rowSize: z
     .union([
       z.literal(10),
@@ -17,6 +17,10 @@ const getTasksSchema = z.object({
   search: z
     .object({ searchAccessor: z.string(), value: z.string() })
     .optional(),
+  filter: z
+    .object({ filterAccessor: z.string(), values: z.string().array() })
+    .array()
+    .optional(),
 });
 
 export function getTasks(
@@ -24,6 +28,8 @@ export function getTasks(
 ):
   | { success: true; tasks: Task[]; maxPage: number }
   | { success: false; message: string } {
+  console.log(params.filter);
+
   try {
     // Validate the incoming parameters
     const validated = getTasksSchema.safeParse(params);

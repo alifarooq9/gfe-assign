@@ -26,6 +26,7 @@ export default async function Home({ searchParams }: HomeProps) {
           rowSize: params.rowSize as string,
           sortBy: params.sortBy as string,
           search: params.search as string,
+          filter: params.filter as string,
         }}
       />
     </main>
