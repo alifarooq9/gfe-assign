@@ -4,7 +4,12 @@ import { format } from "date-fns";
 
 export const taskColumns: Column<Task>[] = [
   { header: "Task ID", accessor: "id", sortable: true },
-  { header: "Title", accessor: "title", sortable: true },
+  {
+    header: "Title",
+    accessor: "title",
+    cell: (row) => <span className="whitespace-nowrap">{row.title}</span>,
+    sortable: true,
+  },
   { header: "Priority", accessor: "priority" },
   { header: "Status", accessor: "status" },
   {

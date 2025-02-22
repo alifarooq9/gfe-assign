@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+export const customFieldSchema = z.object({
+  name: z.string().min(1, "Field name is required"),
+  type: z.enum(["text", "number", "checkbox", "dateTime"]),
+  value: z.union([z.string(), z.number(), z.boolean(), z.date()]),
+  sortable: z.boolean().optional().default(false),
+  filterable: z.boolean().optional().default(false),
+});
+
+export const customFieldsSchema = z
+  .array(customFieldSchema)
+  .optional()
+  .default([]);
+
 export const task = z.object({
   id: z.number(),
   title: z.string().min(2, {
@@ -18,19 +31,11 @@ export const task = z.object({
         "Status must be one of the following: not_started, in_progress, completed",
     })
     .default("not_started"),
-  customFields: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Field name is required"),
-        type: z.enum(["text", "number", "checkbox", "dateTime"]),
-        value: z.union([z.string(), z.number(), z.boolean(), z.date()]),
-      })
-    )
-    .optional()
-    .default([]),
+  customFields: customFieldsSchema,
 });
 
 export type Task = z.infer<typeof task>;
+export type CustomField = z.infer<typeof customFieldSchema>;
 
 export const createTaskSchema = task.pick({
   title: true,

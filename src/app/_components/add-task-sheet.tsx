@@ -9,7 +9,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PlusCircleIcon, Trash2Icon } from "lucide-react";
+import {
+  Loader2Icon,
+  PencilIcon,
+  PlusCircleIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -41,6 +46,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createTaskSchema } from "@/types/task";
 import { addTask } from "@/app/_lib/actions";
+import { Switch } from "@/components/ui/switch";
 
 export default function AddTasksSheet() {
   const router = useRouter();
@@ -204,187 +210,236 @@ export default function AddTasksSheet() {
                   {fields.map((field, index) => (
                     <div
                       key={index}
-                      className="grid gap-2 rounded-md border border-border p-3"
+                      className="grid grid-cols-3 gap-2 rounded-md border border-border p-3"
                     >
-                      <div className="grid grid-cols-3 gap-2">
+                      <FormField
+                        control={form.control}
+                        name={`customFields.${index}.name`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`customFields.${index}.type`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Type</FormLabel>
+                            <FormControl>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {CUSTOM_FIELD_TYPES.map((type) => (
+                                    <SelectItem
+                                      key={type.value}
+                                      value={type.value}
+                                      className="flex items-center gap-2"
+                                    >
+                                      <span className="flex items-center gap-2 capitalize">
+                                        <type.icon className="h-3.5 w-3.5" />
+                                        {type.label}
+                                      </span>
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      {form.watch(`customFields.${index}.type`) === "text" && (
                         <FormField
                           control={form.control}
-                          name={`customFields.${index}.name`}
+                          name={`customFields.${index}.value`}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Name</FormLabel>
+                              <FormLabel>Text Value</FormLabel>
                               <FormControl>
-                                <Input {...field} />
+                                <Input
+                                  {...field}
+                                  onChange={field.onChange}
+                                  value={field.value as string}
+                                />
                               </FormControl>
 
                               <FormMessage />
                             </FormItem>
                           )}
                         />
+                      )}
+
+                      {form.watch(`customFields.${index}.type`) ===
+                        "number" && (
                         <FormField
                           control={form.control}
-                          name={`customFields.${index}.type`}
+                          name={`customFields.${index}.value`}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Type</FormLabel>
+                              <FormLabel>Number Value</FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="text"
+                                  onChange={(e) => {
+                                    const { value } = e.target;
+                                    // Allow only an optional minus sign followed by digits
+                                    if (/^-?\d*$/.test(value)) {
+                                      field.onChange(value);
+                                    }
+                                  }}
+                                  value={field.value as string}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+
+                      {form.watch(`customFields.${index}.type`) ===
+                        "checkbox" && (
+                        <FormField
+                          control={form.control}
+                          name={`customFields.${index}.value`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Checkbox Value</FormLabel>
                               <FormControl>
                                 <Select
                                   onValueChange={field.onChange}
-                                  defaultValue={field.value}
+                                  defaultValue={field.value as string}
                                 >
                                   <SelectTrigger className="w-full">
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {CUSTOM_FIELD_TYPES.map((type) => (
+                                    {CHECKBOX_OPTIONS.map((option) => (
                                       <SelectItem
-                                        key={type.value}
-                                        value={type.value}
-                                        className="flex items-center gap-2"
+                                        key={option.value}
+                                        value={option.value}
                                       >
-                                        <span className="flex items-center gap-2 capitalize">
-                                          <type.icon className="h-3.5 w-3.5" />
-                                          {type.label}
+                                        <span className="flex items-center gap-2">
+                                          <option.icon className="h-3.5 w-3.5" />
+                                          {option.label}
                                         </span>
                                       </SelectItem>
                                     ))}
                                   </SelectContent>
                                 </Select>
                               </FormControl>
-
                               <FormMessage />
                             </FormItem>
                           )}
                         />
+                      )}
 
-                        {form.watch(`customFields.${index}.type`) ===
-                          "text" && (
-                          <FormField
-                            control={form.control}
-                            name={`customFields.${index}.value`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Text Value</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    {...field}
-                                    onChange={field.onChange}
-                                    value={field.value as string}
-                                  />
-                                </FormControl>
+                      {form.watch(`customFields.${index}.type`) ===
+                        "dateTime" && (
+                        <FormField
+                          control={form.control}
+                          name={`customFields.${index}.value`}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Date & Time Value</FormLabel>
+                              <FormControl>
+                                <DateTimePicker
+                                  className="overflow-auto"
+                                  value={field.value as Date}
+                                  onChange={(value) => {
+                                    field.onChange(value);
+                                  }}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
 
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                      <FormField
+                        control={form.control}
+                        name={`customFields.${index}.sortable`}
+                        render={({ field }) => (
+                          <FormItem className="flex space-y-0 items-center justify-between border border-border p-3 h-10 rounded-md">
+                            <FormLabel>Sortable</FormLabel>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
                         )}
+                      />
 
-                        {form.watch(`customFields.${index}.type`) ===
-                          "number" && (
-                          <FormField
-                            control={form.control}
-                            name={`customFields.${index}.value`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Number Value</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    {...field}
-                                    type="text"
-                                    onChange={(e) => {
-                                      const { value } = e.target;
-                                      // Allow only an optional minus sign followed by digits
-                                      if (/^-?\d*$/.test(value)) {
-                                        field.onChange(value);
-                                      }
-                                    }}
-                                    value={field.value as string}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                      <FormField
+                        control={form.control}
+                        name={`customFields.${index}.filterable`}
+                        render={({ field }) => (
+                          <FormItem className="flex space-y-0 items-center justify-between border border-border px-3 h-10 rounded-md">
+                            <FormLabel>Filterable</FormLabel>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
                         )}
+                      />
 
-                        {form.watch(`customFields.${index}.type`) ===
-                          "checkbox" && (
-                          <FormField
-                            control={form.control}
-                            name={`customFields.${index}.value`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Checkbox Value</FormLabel>
-                                <FormControl>
-                                  <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value as string}
-                                  >
-                                    <SelectTrigger className="w-full">
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {CHECKBOX_OPTIONS.map((option) => (
-                                        <SelectItem
-                                          key={option.value}
-                                          value={option.value}
-                                        >
-                                          <span className="flex items-center gap-2">
-                                            <option.icon className="h-3.5 w-3.5" />
-                                            {option.label}
-                                          </span>
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        )}
-
-                        {form.watch(`customFields.${index}.type`) ===
-                          "dateTime" && (
-                          <FormField
-                            control={form.control}
-                            name={`customFields.${index}.value`}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Date & Time Value</FormLabel>
-                                <FormControl>
-                                  <DateTimePicker
-                                    className="overflow-auto"
-                                    value={field.value as Date}
-                                    onChange={(value) => {
-                                      field.onChange(value);
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        )}
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => remove(index)}
+                          className="flex-shrink-0"
+                        >
+                          <PencilIcon />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => remove(index)}
+                          className="flex-shrink-0"
+                        >
+                          <Trash2Icon />
+                        </Button>
                       </div>
-
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => remove(index)}
-                        className="w-fit flex-shrink-0"
-                      >
-                        <Trash2Icon />
-                        Remove
-                      </Button>
                     </div>
                   ))}
                 </div>
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => append({ name: "", type: "text", value: "" })}
+                  onClick={() =>
+                    append({
+                      name: "",
+                      type: "text",
+                      value: "",
+                      sortable: false,
+                      filterable: false,
+                    })
+                  }
                 >
                   <PlusCircleIcon className="h-3.5 w-3.5" />
                   Add Custom Field
