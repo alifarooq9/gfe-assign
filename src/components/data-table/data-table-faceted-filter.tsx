@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Column, FacetedFilterValues, FilterParam } from "@/types/date-table";
-import { CheckIcon, PlusCircleIcon } from "lucide-react";
+import { PlusCircleIcon } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -13,13 +13,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
 } from "@/components/ui/command";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { z } from "zod";
-import { getTasksSchema } from "@/app/_lib/actions";
+import { Badge } from "@/components/ui/badge";
 
 type DataTableFacetedFilterProps<T> = {
   column: Column<T>;
@@ -37,11 +36,13 @@ export function DataTableFacetedFilter<T>({
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
 
-  const [values, setValues] = useState<string[]>([]);
-
   const filterData: FilterParam[] = JSON.parse(params.get("filter") ?? "[]");
 
   const columnAccessor = column.customSortAccessor ?? column.accessor;
+
+  const [values, setValues] = useState<string[]>(
+    filterData?.find((f) => f.filterAccessor === columnAccessor)?.values ?? []
+  );
 
   const filtersWithoutCurrentColumn = filterData?.filter(
     (f) => f.filterAccessor !== columnAccessor
@@ -71,6 +72,32 @@ export function DataTableFacetedFilter<T>({
         >
           <PlusCircleIcon />
           {title}
+
+          {values.length > 0 && (
+            <div className="flex items-center gap-1">
+              <span className="text-border">{" | "}</span>
+              {values.length <= 2 ? (
+                <span className="gap-1 flex items-center">
+                  {values.map((v) => (
+                    <Badge
+                      variant="secondary"
+                      key={v}
+                      className="font-normal px-1.5"
+                    >
+                      {
+                        column.facetedFilterValues?.find((f) => f.value === v)
+                          ?.label
+                      }
+                    </Badge>
+                  ))}
+                </span>
+              ) : (
+                <Badge variant="secondary" className="font-normal px-1.5">
+                  {values.length} selected
+                </Badge>
+              )}
+            </div>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
@@ -102,6 +129,19 @@ export function DataTableFacetedFilter<T>({
                 </CommandItem>
               ))}
             </CommandGroup>
+            {values.length > 0 && (
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  <CommandItem
+                    className="text-center"
+                    onSelect={() => setValues([])}
+                  >
+                    Clear filters
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
