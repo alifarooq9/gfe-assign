@@ -28,8 +28,6 @@ export function getTasks(
 ):
   | { success: true; tasks: Task[]; maxPage: number }
   | { success: false; message: string } {
-  console.log(params.filter);
-
   try {
     // Validate the incoming parameters
     const validated = getTasksSchema.safeParse(params);
@@ -39,7 +37,7 @@ export function getTasks(
         message: `${validated.error.issues[0]?.path[0]} - ${validated.error.issues[0]?.message}`,
       };
     }
-    const { rowSize = 10, page = 1, sortBy, search } = validated.data;
+    const { rowSize = 10, page = 1, sortBy, search, filter } = validated.data;
     const offset = (page - 1) * rowSize;
 
     // Get tasks from localStorage if available; otherwise fallback to the mock data
@@ -68,6 +66,27 @@ export function getTasks(
         const fieldValue =
           (task[accessor] as string | undefined)?.toLowerCase() || "";
         return fieldValue.includes(searchValue);
+      });
+    }
+
+    if (filter && filter.length > 0) {
+      filteredTasks = filteredTasks.filter((task) => {
+        return filter.every((filterObj) => {
+          const { filterAccessor, values } = filterObj;
+          if (filterAccessor.startsWith("customFields.")) {
+            // Handle custom fields
+            const customFieldName = filterAccessor.split(".")[1];
+            const customField = task.customFields?.find(
+              (cf) => cf.name === customFieldName
+            );
+            const taskValue = customField ? String(customField.value) : "";
+            return values.length > 0 ? values.includes(taskValue) : true;
+          } else {
+            // Handle regular fields
+            const taskValue = String(task[filterAccessor as keyof Task] ?? "");
+            return values.length > 0 ? values.includes(taskValue) : true;
+          }
+        });
       });
     }
 

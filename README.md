@@ -27,9 +27,9 @@
     - [x] Allow adding new fields with a name, type, and value.
     - [x] Enable deletion of custom fields.
     - [ ] Enable editing of custom fields.
-  - [ ] Dynamically display custom fields in the task view
+  - [x] Dynamically display custom fields in the task view
     - [x] Show custom fields within the task details.
-    - [ ] Allow users to sort and filter tasks by custom fields.
+    - [x] Allow users to sort and filter tasks by custom fields.
     - [x] Ensure tasks missing custom field data display a default state.
 
 #### Additional Milestones
