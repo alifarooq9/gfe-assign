@@ -41,7 +41,7 @@ import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
 } from "@/config/task-options";
-import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { TimePicker } from "@/components/ui/time-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { createTaskSchema, updateTaskSchema } from "@/types/task";
@@ -49,6 +49,7 @@ import { addTask, updateTask } from "@/app/_lib/actions";
 import { Switch } from "@/components/ui/switch";
 import { useEditTaskStore } from "@/app/_lib/tasks";
 import { useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function AddTasksSheet() {
   const router = useRouter();
@@ -400,13 +401,20 @@ export default function AddTasksSheet() {
                             <FormItem>
                               <FormLabel>Date & Time Value</FormLabel>
                               <FormControl>
-                                <DateTimePicker
-                                  className="overflow-auto"
-                                  value={field.value as Date}
-                                  onChange={(value) => {
-                                    field.onChange(value);
-                                  }}
-                                />
+                                <div>
+                                  <Calendar
+                                    mode="single"
+                                    selected={field.value as Date}
+                                    onSelect={field.onChange}
+                                    initialFocus
+                                  />
+                                  <div className="p-3 border-t border-border">
+                                    <TimePicker
+                                      setDate={field.onChange}
+                                      date={new Date(field.value as string)}
+                                    />
+                                  </div>
+                                </div>
                               </FormControl>
                               <FormMessage />
                             </FormItem>
