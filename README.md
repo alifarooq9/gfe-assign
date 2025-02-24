@@ -5,9 +5,9 @@
 #### Milestones
 
 - [x] **Milestone 1** – Display a table view of all tasks.
-- [ ] **Milestone 2** – Task management
+- [x] **Milestone 2** – Task management
   - [x] Create a task – *(using a modal form that includes fields for title, priority, and status)*
-  - [ ] Edit a task – *(using a modal form that includes fields for title, priority, and status)*
+  - [x] Edit a task – *(using a modal form that includes fields for title, priority, and status)*
   - [x] Delete a task – *(using a modal form for confirmation)*
 - [x] **Milestone 3** – Sorting and filtering tasks
   - [x] Enable sorting by clicking on column headers.
@@ -21,12 +21,12 @@
 - [x] **Milestone 5** – Local persistence
   - [x] Implement reading from the localstorage.
   - [x] Implement writing to the localstorage.
-- [ ] **Milestone 6** – Custom fields
-  - [ ] Add custom fields to tasks
+- [x] **Milestone 6** – Custom fields
+  - [x] Add custom fields to tasks
     - [x] Provide an interface within the modal form for adding custom fields.
     - [x] Allow adding new fields with a name, type, and value.
     - [x] Enable deletion of custom fields.
-    - [ ] Enable editing of custom fields.
+    - [x] Enable editing of custom fields.
   - [x] Dynamically display custom fields in the task view
     - [x] Show custom fields within the task details.
     - [x] Allow users to sort and filter tasks by custom fields.
