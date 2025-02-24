@@ -64,8 +64,8 @@ export function TasksTableDropdown({ row }: TasksTableDropdownProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete "
-            {row.title}" task and all its associated data.
+            This action cannot be undone. This will permanently delete &quot;
+            {row.title}&quot; task and all its associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -99,7 +99,7 @@ export function getTasks(
     // We support both regular fields and customFields.
     // For custom fields, we expect sortBy to be in the format: "customFields.fieldName.direction"
     // For regular fields: "fieldName.direction"
-    let sortedTasks = [...filteredTasks];
+    const sortedTasks = [...filteredTasks];
     if (sortBy) {
       const sortParts = sortBy.split(".");
       const isCustomField = sortParts[0] === "customFields";

@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Loader2Icon,
-  PencilIcon,
   PlusCircleIcon,
   PlusIcon,
   Trash2Icon,
@@ -45,7 +44,7 @@ import {
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createTaskSchema, Task, updateTaskSchema } from "@/types/task";
+import { createTaskSchema, updateTaskSchema } from "@/types/task";
 import { addTask, updateTask } from "@/app/_lib/actions";
 import { Switch } from "@/components/ui/switch";
 import { useEditTaskStore } from "@/app/_lib/tasks";
