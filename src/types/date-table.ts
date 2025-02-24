@@ -2,13 +2,14 @@ import { DEFAULTROWSSIZE } from "@/components/data-table/data-table";
 import { LucideIcon } from "lucide-react";
 
 export type Column<T> = {
-  header: string;
-  accessor: keyof T;
+  header?: string;
+  accessor: keyof T | (string & {});
   cell?: (row: T) => React.ReactNode;
   customSortAccessor?: string;
   sortable?: boolean;
   filterable?: boolean;
   facetedFilterValues?: FacetedFilterValues[];
+  cellClassName?: string;
 };
 
 export type FacetedFilterValues = {

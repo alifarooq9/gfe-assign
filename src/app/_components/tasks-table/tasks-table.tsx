@@ -1,6 +1,6 @@
 "use client";
 
-import { taskColumns } from "@/app/_components/table/tasks-columns";
+import { taskColumns } from "@/app/_components/tasks-table/tasks-columns";
 import { getAllCustomFields, getTasks } from "@/app/_lib/actions";
 import { DataTable } from "@/components/data-table/data-table";
 import { Column, FilterParam, RowSize, SearchParam } from "@/types/date-table";
@@ -96,7 +96,11 @@ export function TasksTable({ searchParams }: TableViewProps) {
       })),
     }));
 
-    return [...taskColumns, ...customColumns];
+    return [
+      ...taskColumns.filter((c) => c.accessor !== "actions"),
+      ...customColumns,
+      ...taskColumns.filter((c) => c.accessor === "actions"),
+    ];
   }, [data]);
 
   //refetch

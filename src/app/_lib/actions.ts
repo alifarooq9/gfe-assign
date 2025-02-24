@@ -301,3 +301,22 @@ export function getAllCustomFields():
     };
   }
 }
+
+export function deleteTask(
+  id: string
+): { success: true } | { success: false; message: string } {
+  try {
+    const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
+    const updatedTasks = tasks.filter((task) => task.id !== Number(id));
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: (error as Error).message,
+    };
+  }
+}

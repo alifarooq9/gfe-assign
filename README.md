@@ -8,7 +8,7 @@
 - [ ] **Milestone 2** – Task management
   - [x] Create a task – *(using a modal form that includes fields for title, priority, and status)*
   - [ ] Edit a task – *(using a modal form that includes fields for title, priority, and status)*
-  - [ ] Delete a task – *(using a modal form for confirmation)*
+  - [x] Delete a task – *(using a modal form for confirmation)*
 - [x] **Milestone 3** – Sorting and filtering tasks
   - [x] Enable sorting by clicking on column headers.
   - [x] Implement text-based search filtering.

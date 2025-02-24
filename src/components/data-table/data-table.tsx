@@ -13,6 +13,7 @@ import {
 import { DataTableSearchFilter } from "@/components/data-table/data-table-search-filter";
 import { Column, FacetedFilterValues } from "@/types/date-table";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
+import { cn } from "@/lib/utils";
 
 type DataTableProps<T> = {
   columns: Column<T>[];
@@ -45,7 +46,7 @@ export function DataTable<T>({
               <DataTableFacetedFilter
                 key={index}
                 column={c}
-                title={c.header}
+                title={c.header ?? ""}
                 options={c.facetedFilterValues as FacetedFilterValues[]}
               />
             ))}
@@ -68,9 +69,16 @@ export function DataTable<T>({
                   {columns.map((column, colIndex) => {
                     const content = column.cell
                       ? column.cell(row)
-                      : (row[column.accessor] as React.ReactNode);
+                      : (row[column.accessor as keyof T] as React.ReactNode);
 
-                    return <TableCell key={colIndex}>{content}</TableCell>;
+                    return (
+                      <TableCell
+                        key={colIndex}
+                        className={cn(column.cellClassName)}
+                      >
+                        {content}
+                      </TableCell>
+                    );
                   })}
                 </TableRow>
               ))

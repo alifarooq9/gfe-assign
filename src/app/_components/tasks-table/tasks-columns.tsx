@@ -1,3 +1,4 @@
+import { TasksTableDropdown } from "@/app/_components/tasks-table/tasks-table-dropdown";
 import { PRIORITY_OPTIONS, STATUS_OPTIONS } from "@/config/task-options";
 import { Column } from "@/types/date-table";
 import { Task } from "@/types/task";
@@ -43,5 +44,11 @@ export const taskColumns: Column<Task>[] = [
       </span>
     ),
     sortable: true,
+  },
+  {
+    header: "Actions",
+    accessor: "actions",
+    cell: (row) => <TasksTableDropdown row={row} />,
+    cellClassName: "flex justify-center",
   },
 ];

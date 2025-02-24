@@ -1,5 +1,5 @@
 import AddTasksSheet from "@/app/_components/add-task-sheet";
-import { TasksTable } from "@/app/_components/table/tasks-table";
+import { TasksTable } from "@/app/_components/tasks-table/tasks-table";
 
 type HomeProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
