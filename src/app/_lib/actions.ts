@@ -1,5 +1,10 @@
 import { mock } from "@/config/mock-data";
-import { createTaskSchema, CustomField, Task } from "@/types/task";
+import {
+  createTaskSchema,
+  CustomField,
+  Task,
+  updateTaskSchema,
+} from "@/types/task";
 import { z } from "zod";
 
 export const getTasksSchema = z.object({
@@ -293,6 +298,68 @@ export function getAllCustomFields():
       success: true,
       customFields,
       customFieldsColumns,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: (error as Error).message,
+    };
+  }
+}
+
+export function updateTask(params: z.infer<typeof updateTaskSchema>):
+  | {
+      success: true;
+      task: Task;
+    }
+  | {
+      success: false;
+      message: string;
+    } {
+  try {
+    // Validate the incoming parameters
+    const validated = updateTaskSchema.safeParse(params);
+    if (!validated.success) {
+      return {
+        success: false,
+        message: `${validated.error.issues[0]?.path[0]} - ${validated.error.issues[0]?.message}`,
+      };
+    }
+    const { id, title, priority, status, customFields } = validated.data;
+
+    const tasks =
+      localStorage.getItem("tasks") !== null && localStorage.getItem("tasks")
+        ? JSON.parse(localStorage.getItem("tasks")!)
+        : mock;
+
+    // Find the task with the given ID
+    const taskIndex: number = tasks.findIndex(
+      (task: Task) => task.id === Number(id)
+    );
+    if (taskIndex === -1) {
+      return {
+        success: false,
+        message: "Task not found",
+      };
+    }
+
+    // Update the task
+    const updatedTask = {
+      ...tasks[taskIndex],
+      title,
+      priority,
+      status,
+      customFields,
+    };
+
+    // Update the task in the localStorage
+    const updatedTasks = [...tasks];
+    updatedTasks[taskIndex] = updatedTask;
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    return {
+      success: true,
+      task: updatedTask,
     };
   } catch (error) {
     return {

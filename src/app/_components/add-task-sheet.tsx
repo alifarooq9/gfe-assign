@@ -45,12 +45,18 @@ import {
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { createTaskSchema } from "@/types/task";
-import { addTask } from "@/app/_lib/actions";
+import { createTaskSchema, Task, updateTaskSchema } from "@/types/task";
+import { addTask, updateTask } from "@/app/_lib/actions";
 import { Switch } from "@/components/ui/switch";
+import { useEditTaskStore } from "@/app/_lib/tasks";
+import { useEffect, useState } from "react";
 
 export default function AddTasksSheet() {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  // if editTaskId is not null, display the edit form
+  const { editTaskId, editTaskRowData, setEditTask } = useEditTaskStore();
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
     resolver: zodResolver(createTaskSchema),
@@ -72,6 +78,7 @@ export default function AddTasksSheet() {
     },
     onSuccess: () => {
       console.log("success");
+      setOpen(false);
     },
     onError: () => {
       console.log("error");
@@ -81,12 +88,49 @@ export default function AddTasksSheet() {
     },
   });
 
+  const { mutateAsync: updateTaskTrigger, isPending: isPendingUpdate } =
+    useMutation({
+      mutationFn: async (data: z.infer<typeof updateTaskSchema>) => {
+        return updateTask(data);
+      },
+      onSuccess: () => {
+        console.log("success");
+        setOpen(false);
+        setEditTask({
+          id: null,
+          row: null,
+        });
+      },
+      onError: () => {
+        console.log("error");
+      },
+      onSettled: () => {
+        router.refresh();
+      },
+    });
+
+  useEffect(() => {
+    if (editTaskId && editTaskRowData) {
+      form.setValue("title", editTaskRowData.title);
+      form.setValue("priority", editTaskRowData.priority);
+      form.setValue("status", editTaskRowData.status);
+      form.setValue("customFields", editTaskRowData.customFields);
+      setOpen(true);
+    }
+  }, [editTaskId]);
+
+  const isEditing = !!editTaskId && !!editTaskRowData;
+
   const onSubmit = async (data: z.infer<typeof createTaskSchema>) => {
-    await createTaskTrigger(data);
+    if (isEditing) {
+      await updateTaskTrigger({ id: editTaskRowData.id, ...data });
+    } else {
+      await createTaskTrigger(data);
+    }
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button type="button" size="icon">
           <PlusIcon />
@@ -405,24 +449,15 @@ export default function AddTasksSheet() {
                         )}
                       />
 
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => remove(index)}
-                          className="flex-shrink-0"
-                        >
-                          <PencilIcon />
-                        </Button>
+                      <div className="grid grid-cols-1 gap-2">
                         <Button
                           type="button"
                           variant="destructive"
                           size="sm"
                           onClick={() => remove(index)}
-                          className="flex-shrink-0"
+                          className="flex-shrink-0 text-xs"
                         >
-                          <Trash2Icon />
+                          <Trash2Icon /> Remove
                         </Button>
                       </div>
                     </div>
@@ -451,7 +486,7 @@ export default function AddTasksSheet() {
                   {isPending ? (
                     <Loader2Icon className="h-3.5 w-3.5 animate-spin" />
                   ) : null}
-                  Create
+                  {isEditing ? "Save" : "Create"}
                 </Button>
               </div>
             </form>

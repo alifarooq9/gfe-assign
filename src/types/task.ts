@@ -43,3 +43,11 @@ export const createTaskSchema = task.pick({
   priority: true,
   customFields: true,
 });
+
+export const updateTaskSchema = task.pick({
+  id: true,
+  title: true,
+  status: true,
+  priority: true,
+  customFields: true,
+});

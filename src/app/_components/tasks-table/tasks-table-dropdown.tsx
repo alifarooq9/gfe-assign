@@ -22,6 +22,7 @@ import {
 import { Task } from "@/types/task";
 import { EllipsisIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEditTaskStore } from "@/app/_lib/tasks";
 
 type TasksTableDropdownProps = {
   row: Task;
@@ -35,6 +36,8 @@ export function TasksTableDropdown({ row }: TasksTableDropdownProps) {
     router.refresh();
   };
 
+  const { setEditTask } = useEditTaskStore();
+
   return (
     <AlertDialog>
       <DropdownMenu>
@@ -46,7 +49,11 @@ export function TasksTableDropdown({ row }: TasksTableDropdownProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setEditTask({ id: row.id.toString(), row })}
+          >
+            Edit
+          </DropdownMenuItem>
           <AlertDialogTrigger asChild>
             <DropdownMenuItem>Delete </DropdownMenuItem>
           </AlertDialogTrigger>
