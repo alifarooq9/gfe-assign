@@ -106,7 +106,7 @@ export function TasksTable({ searchParams }: TableViewProps) {
   //refetch
   useEffect(() => {
     if (!isPending) refetch();
-  }, [searchParams]);
+  }, [searchParams, isPending, refetch]);
 
   if (isPending) {
     return <div>Loading...</div>;

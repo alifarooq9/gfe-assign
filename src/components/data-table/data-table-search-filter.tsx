@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
 
 type DataTableSearchFilterProps = {
   searchFilterAccessor: string;

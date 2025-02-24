@@ -481,8 +481,12 @@ export default function AddTasksSheet() {
               </div>
 
               <div className="absolute bottom-8 grid w-full gap-2 bg-card py-4">
-                <Button type="submit" className="w-full">
-                  {isPending ? (
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isPending || isPendingUpdate}
+                >
+                  {isPending || isPendingUpdate ? (
                     <Loader2Icon className="h-3.5 w-3.5 animate-spin" />
                   ) : null}
                   {isEditing ? "Save" : "Create"}
