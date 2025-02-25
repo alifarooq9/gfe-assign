@@ -20,6 +20,7 @@ type DataTableProps<T> = {
   data: T[];
   maxPage: number;
   searchFilterAccessor?: keyof T;
+  children?: React.ReactNode;
 };
 
 export const DEFAULTROWSSIZE = [10, 20, 30, 40, 50] as const;
@@ -29,6 +30,7 @@ export function DataTable<T>({
   data,
   maxPage,
   searchFilterAccessor,
+  children,
 }: DataTableProps<T>) {
   return (
     <div className="grid gap-4">
@@ -51,6 +53,8 @@ export function DataTable<T>({
               />
             ))}
         </div>
+
+        {children}
       </div>
 
       <div className="overflow-hidden rounded-md border border-border">

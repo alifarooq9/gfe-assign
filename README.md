@@ -36,5 +36,5 @@
 
 - [ ] **Milestone 7** – Implement animations and transitions.
 - [ ] **Milestone 8** – Add undo/redo functionality.
-- [ ] **Milestone 9** – Enable multiselect for bulk actions.
+- [x] **Milestone 9** – Enable multiselect for bulk actions.
 - [ ] **Milestone 10** – Create a Kanban board view.

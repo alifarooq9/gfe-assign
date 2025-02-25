@@ -1,4 +1,4 @@
-import { deleteTask } from "@/app/_lib/actions";
+import { deleteTasks } from "@/app/_lib/actions";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -32,7 +32,7 @@ export function TasksTableDropdown({ row }: TasksTableDropdownProps) {
   const router = useRouter();
 
   const handleDelete = () => {
-    deleteTask(row.id.toString());
+    deleteTasks([row.id.toString()]);
     router.refresh();
   };
 

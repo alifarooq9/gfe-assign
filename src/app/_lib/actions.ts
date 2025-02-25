@@ -369,12 +369,15 @@ export function updateTask(params: z.infer<typeof updateTaskSchema>):
   }
 }
 
-export function deleteTask(
-  id: string
+export function deleteTasks(
+  id: string[]
 ): { success: true } | { success: false; message: string } {
   try {
     const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
-    const updatedTasks = tasks.filter((task) => task.id !== Number(id));
+    const updatedTasks = tasks.filter(
+      (task) => !id.includes(task.id.toString())
+    );
+
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
 
     return {

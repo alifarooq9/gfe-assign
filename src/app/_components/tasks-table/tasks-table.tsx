@@ -1,7 +1,9 @@
 "use client";
 
-import { taskColumns } from "@/app/_components/tasks-table/tasks-columns";
+import { getTaskColumns } from "@/app/_components/tasks-table/tasks-columns";
+import { TasksTableMultiSelectDropdown } from "@/app/_components/tasks-table/tasks-table-multi-select-dropdown";
 import { getAllCustomFields, getTasks } from "@/app/_lib/actions";
+import { useTaskMultiSelectStore } from "@/app/_lib/tasks";
 import { DataTable } from "@/components/data-table/data-table";
 import { Column, FilterParam, RowSize, SearchParam } from "@/types/date-table";
 import { Task } from "@/types/task";
@@ -56,7 +58,10 @@ export function TasksTable({ searchParams }: TableViewProps) {
     },
   });
 
-  // Define columns with useMemo before any returns
+  const taskColumns = getTaskColumns();
+  const { selectedTasks } = useTaskMultiSelectStore();
+
+  // Define columns with useMemo to avoid re-rendering the table on every search
   const columns: Column<Task>[] = useMemo(() => {
     // If data isn’t available yet, return base columns or an empty array
     if (!data || !data.customFieldsColumns) {
@@ -101,12 +106,19 @@ export function TasksTable({ searchParams }: TableViewProps) {
       ...customColumns,
       ...taskColumns.filter((c) => c.accessor === "actions"),
     ];
-  }, [data]);
+  }, [data, selectedTasks]);
+
+  const { selectedTasks: multiSelectTasks, removeAllSelectedTasks } =
+    useTaskMultiSelectStore();
 
   //refetch
   useEffect(() => {
     if (!isPending) refetch();
-  }, [searchParams, isPending, refetch]);
+
+    if (multiSelectTasks.length > 0) {
+      removeAllSelectedTasks();
+    }
+  }, [searchParams]);
 
   if (isPending) {
     return <div>Loading...</div>;
@@ -122,6 +134,8 @@ export function TasksTable({ searchParams }: TableViewProps) {
       columns={columns}
       maxPage={data?.maxPage as number}
       searchFilterAccessor="title"
-    />
+    >
+      {multiSelectTasks.length > 0 && <TasksTableMultiSelectDropdown />}
+    </DataTable>
   );
 }
