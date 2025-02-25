@@ -7,7 +7,7 @@ import { Column } from "@/types/date-table";
 import { Task } from "@/types/task";
 import { format } from "date-fns";
 
-export const getTaskColumns = (): Column<Task>[] => {
+export const GetTaskColumns = (): Column<Task>[] => {
   const { appendSelectedTasks, removeSelectedTasks, selectedTasks } =
     useTaskMultiSelectStore();
 

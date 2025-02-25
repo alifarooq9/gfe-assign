@@ -117,7 +117,7 @@ export default function AddTasksSheet() {
       form.setValue("customFields", editTaskRowData.customFields);
       setOpen(true);
     }
-  }, [editTaskId]);
+  }, [editTaskId, editTaskRowData]);
 
   const isEditing = !!editTaskId && !!editTaskRowData;
 

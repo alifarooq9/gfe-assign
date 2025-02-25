@@ -1,6 +1,6 @@
 "use client";
 
-import { getTaskColumns } from "@/app/_components/tasks-table/tasks-columns";
+import { GetTaskColumns } from "@/app/_components/tasks-table/tasks-columns";
 import { TasksTableMultiSelectDropdown } from "@/app/_components/tasks-table/tasks-table-multi-select-dropdown";
 import { getAllCustomFields, getTasks } from "@/app/_lib/actions";
 import { useTaskMultiSelectStore } from "@/app/_lib/tasks";
@@ -58,7 +58,7 @@ export function TasksTable({ searchParams }: TableViewProps) {
     },
   });
 
-  const taskColumns = getTaskColumns();
+  const taskColumns = GetTaskColumns();
   const { selectedTasks } = useTaskMultiSelectStore();
 
   // Define columns with useMemo to avoid re-rendering the table on every search
