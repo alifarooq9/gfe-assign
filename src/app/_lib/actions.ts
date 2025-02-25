@@ -182,6 +182,30 @@ export function getTasks(
   }
 }
 
+export function getAllTasks():
+  | {
+      success: true;
+      tasks: Task[];
+    }
+  | {
+      success: false;
+      message: string;
+    } {
+  try {
+    const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
+
+    return {
+      success: true,
+      tasks,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: (error as Error).message,
+    };
+  }
+}
+
 export function addTask(params: z.infer<typeof createTaskSchema>):
   | {
       success: true;
@@ -214,6 +238,7 @@ export function addTask(params: z.infer<typeof createTaskSchema>):
       priority,
       status,
       createdAt: new Date(),
+      updatedAt: new Date(),
       customFields: customFields.map((f) => ({
         ...f,
         name: f.name.toLowerCase(),
@@ -311,6 +336,7 @@ export function updateTask(params: z.infer<typeof updateTaskSchema>):
   | {
       success: true;
       task: Task;
+      newTasks: Task[];
     }
   | {
       success: false;
@@ -346,11 +372,14 @@ export function updateTask(params: z.infer<typeof updateTaskSchema>):
     // Update the task
     const updatedTask = {
       ...tasks[taskIndex],
+      updatedAt: new Date(),
       title,
       priority,
       status,
       customFields,
     };
+
+    console.log(updatedTask);
 
     // Update the task in the localStorage
     const updatedTasks = [...tasks];
@@ -360,6 +389,7 @@ export function updateTask(params: z.infer<typeof updateTaskSchema>):
     return {
       success: true,
       task: updatedTask,
+      newTasks: updatedTasks,
     };
   } catch (error) {
     return {

@@ -3,6 +3,7 @@ import { useTaskMultiSelectStore } from "@/app/_lib/tasks";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRIORITY_OPTIONS, STATUS_OPTIONS } from "@/config/task-options";
+import { cn } from "@/lib/utils";
 import { Column } from "@/types/date-table";
 import { Task } from "@/types/task";
 import { format } from "date-fns";
@@ -49,31 +50,11 @@ export const GetTaskColumns = (): Column<Task>[] => {
         const priority = PRIORITY_OPTIONS.find(
           (option) => option.value === row.priority
         );
-        let variant = "secondary";
-        switch (priority?.value) {
-          case "none":
-            variant = "secondary";
-            break;
-          case "urgent":
-            variant = "destructive";
-            break;
-          case "high":
-            variant = "orange";
-            break;
-          case "medium":
-            variant = "alert";
-            break;
-          case "low":
-            variant = "success";
-            break;
-          default:
-            variant = "secondary";
-            break;
-        }
+
         return (
           <Badge
-            variant={variant as "secondary"}
-            className="capitalize gap-1.5 py-1"
+            variant="secondary"
+            className={cn("capitalize gap-1.5 py-1", priority?.colorClassName)}
           >
             {priority?.icon && <priority.icon className="h-3.5 w-3.5" />}
             {priority?.label}
@@ -96,25 +77,11 @@ export const GetTaskColumns = (): Column<Task>[] => {
         const status = STATUS_OPTIONS.find(
           (option) => option.value === row.status
         );
-        let variant = "secondary";
-        switch (status?.value) {
-          case "not_started":
-            variant = "secondary";
-            break;
-          case "in_progress":
-            variant = "alert";
-            break;
-          case "completed":
-            variant = "success";
-            break;
-          default:
-            variant = "secondary";
-            break;
-        }
+
         return (
           <Badge
-            variant={variant as "secondary"}
-            className="capitalize gap-1.5 py-1"
+            variant="secondary"
+            className={cn("capitalize gap-1.5 py-1", status?.colorClassName)}
           >
             {status?.icon && <status.icon className="h-3.5 w-3.5" />}
             {status?.label}
@@ -129,6 +96,19 @@ export const GetTaskColumns = (): Column<Task>[] => {
         <span>
           {format(
             new Date(new Date(row.createdAt ?? new Date().toString())),
+            "PP"
+          )}
+        </span>
+      ),
+      sortable: true,
+    },
+    {
+      header: "Updated At",
+      accessor: "updatedAt",
+      cell: (row) => (
+        <span>
+          {format(
+            new Date(new Date(row.updatedAt ?? new Date().toString())),
             "PP"
           )}
         </span>

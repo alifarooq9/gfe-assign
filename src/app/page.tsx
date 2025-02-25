@@ -11,12 +11,7 @@ export default async function Home({ searchParams }: HomeProps) {
   return (
     <main className="grid gap-4">
       <div className="flex w-full items-center justify-between">
-        <h1 className="text-lg font-bold">
-          Table View{" "}
-          <span className="text-sm font-normal text-muted-foreground">
-            (Server Side Rendering)
-          </span>
-        </h1>
+        <h1 className="text-lg font-bold">Table View </h1>
 
         <AddTasksSheet />
       </div>

@@ -687,8 +687,13 @@ const getRandomDate = (start: Date, end: Date): Date => {
   );
 };
 
-export const mock: Task[] = tasksWithoutCreatedAt.map((task) => ({
-  ...task,
-  createdAt: getRandomDate(new Date(2020, 0, 1), new Date()),
-  customFields: [],
-}));
+export const mock: Task[] = tasksWithoutCreatedAt.map((task) => {
+  const date = getRandomDate(new Date(2020, 0, 1), new Date());
+
+  return {
+    ...task,
+    createdAt: date,
+    updatedAt: date,
+    customFields: [],
+  };
+});

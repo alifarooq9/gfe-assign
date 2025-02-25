@@ -25,6 +25,7 @@ export const task = z.object({
     })
     .default("none"),
   createdAt: z.date(),
+  updatedAt: z.date(),
   status: z
     .enum(["not_started", "in_progress", "completed"], {
       message:
