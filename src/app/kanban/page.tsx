@@ -1,5 +1,6 @@
 "use client";
 
+import AddTasksSheet from "@/app/_components/add-task-sheet";
 import { KanbanView } from "@/app/kanban/_components/kanban-view";
 
 export default function Kanban() {
@@ -10,6 +11,8 @@ export default function Kanban() {
       </div>
 
       <KanbanView />
+
+      <AddTasksSheet showButton={false} />
     </main>
   );
 }

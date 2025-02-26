@@ -47,13 +47,23 @@ import { useRouter } from "next/navigation";
 import { createTaskSchema, updateTaskSchema } from "@/types/task";
 import { addTask, updateTask } from "@/app/_lib/actions";
 import { Switch } from "@/components/ui/switch";
-import { useEditTaskStore } from "@/app/_lib/tasks";
-import { useEffect, useState } from "react";
+import { useCreateTaskSheetStore, useEditTaskStore } from "@/app/_lib/tasks";
+import { useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 
-export default function AddTasksSheet() {
+type AddTasksSheetProps = {
+  showButton?: boolean;
+};
+
+export default function AddTasksSheet({
+  showButton = true,
+}: AddTasksSheetProps) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const {
+    sheetOpen: open,
+    setSheetOpen: setOpen,
+    defaultValues,
+  } = useCreateTaskSheetStore();
 
   // if editTaskId is not null, display the edit form
   const { editTaskId, editTaskRowData, setEditTask } = useEditTaskStore();
@@ -78,7 +88,7 @@ export default function AddTasksSheet() {
     },
     onSuccess: () => {
       console.log("success");
-      setOpen(false);
+      setOpen({ sheetOpen: false });
     },
     onError: () => {
       console.log("error");
@@ -95,7 +105,7 @@ export default function AddTasksSheet() {
       },
       onSuccess: () => {
         console.log("success");
-        setOpen(false);
+        setOpen({ sheetOpen: false });
         setEditTask({
           id: null,
           row: null,
@@ -115,9 +125,21 @@ export default function AddTasksSheet() {
       form.setValue("priority", editTaskRowData.priority);
       form.setValue("status", editTaskRowData.status);
       form.setValue("customFields", editTaskRowData.customFields);
-      setOpen(true);
+      setOpen({ sheetOpen: true });
     }
-  }, [editTaskId, editTaskRowData]);
+
+    if (open) {
+      defaultValues?.priority &&
+        form.setValue("priority", defaultValues.priority);
+
+      defaultValues?.status && form.setValue("status", defaultValues.status);
+
+      defaultValues?.title && form.setValue("title", defaultValues.title);
+
+      defaultValues?.customFields &&
+        form.setValue("customFields", defaultValues.customFields);
+    }
+  }, [editTaskId, editTaskRowData, open]);
 
   const isEditing = !!editTaskId && !!editTaskRowData;
 
@@ -133,7 +155,7 @@ export default function AddTasksSheet() {
     <Sheet
       open={open}
       onOpenChange={(open) => {
-        setOpen(open);
+        setOpen({ sheetOpen: open });
         if (!open) {
           setEditTask({
             id: null,
@@ -142,11 +164,13 @@ export default function AddTasksSheet() {
         }
       }}
     >
-      <SheetTrigger asChild>
-        <Button type="button" size="icon">
-          <PlusIcon />
-        </Button>
-      </SheetTrigger>
+      {showButton && (
+        <SheetTrigger asChild>
+          <Button type="button" size="icon">
+            <PlusIcon />
+          </Button>
+        </SheetTrigger>
+      )}
       <SheetContent className="w-[calc(100%-2rem)] sm:max-w-[36rem]">
         <SheetHeader>
           <SheetTitle>Add Tasks</SheetTitle>

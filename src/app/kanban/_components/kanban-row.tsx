@@ -8,7 +8,6 @@ import { CSS } from "@dnd-kit/utilities";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
