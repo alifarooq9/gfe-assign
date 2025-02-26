@@ -129,15 +129,18 @@ export default function AddTasksSheet({
     }
 
     if (open) {
-      defaultValues?.priority &&
+      if (defaultValues?.priority) {
         form.setValue("priority", defaultValues.priority);
-
-      defaultValues?.status && form.setValue("status", defaultValues.status);
-
-      defaultValues?.title && form.setValue("title", defaultValues.title);
-
-      defaultValues?.customFields &&
+      }
+      if (defaultValues?.status) {
+        form.setValue("status", defaultValues.status);
+      }
+      if (defaultValues?.title) {
+        form.setValue("title", defaultValues.title);
+      }
+      if (defaultValues?.customFields) {
         form.setValue("customFields", defaultValues.customFields);
+      }
     }
   }, [editTaskId, editTaskRowData, open]);
 

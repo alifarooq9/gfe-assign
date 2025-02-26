@@ -14,7 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import { useEditTaskStore } from "@/app/_lib/tasks";
 
 type KanbanRowProps = {
   task: Task;
@@ -28,8 +27,6 @@ export function KanbanRow({ task }: KanbanRowProps) {
   const style = {
     transform: CSS.Translate.toString(transform),
   };
-
-  const { setEditTask } = useEditTaskStore();
 
   return (
     <Card
