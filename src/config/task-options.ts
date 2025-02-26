@@ -14,13 +14,12 @@ import {
   TextIcon,
   type LucideIcon,
 } from "lucide-react";
-import { ClassNameValue } from "tailwind-merge";
 
 export interface OptionItem {
   value: string;
   label: string;
   icon: LucideIcon;
-  colorClassName?: string;
+  variantColor?: string;
 }
 
 export const PRIORITY_OPTIONS: OptionItem[] = [
@@ -28,32 +27,33 @@ export const PRIORITY_OPTIONS: OptionItem[] = [
     value: "none",
     label: "None",
     icon: CircleOffIcon,
-    colorClassName:
+    variantColor:
       "bg-secondary text-secondary-foreground hover:bg-secondary/80",
   },
   {
     value: "low",
     label: "Low",
     icon: ArrowDownIcon,
-    colorClassName: "bg-green-100 text-green-800 hover:bg-green-200",
+    variantColor: "bg-success text-success-foreground hover:bg-success/80",
   },
   {
     value: "medium",
     label: "Medium",
     icon: MinusIcon,
-    colorClassName: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
+    variantColor: "bg-alert text-alert-foreground hover:bg-alert/80",
   },
   {
     value: "high",
     label: "High",
     icon: ArrowUpIcon,
-    colorClassName: "bg-orange-100 text-orange-800 hover:bg-orange-200",
+    variantColor:
+      "bg-high-alert text-high-alert-foreground hover:bg-high-alert/80",
   },
   {
     value: "urgent",
     label: "Urgent",
     icon: AlertTriangleIcon,
-    colorClassName:
+    variantColor:
       "bg-destructive text-destructive-foreground hover:bg-destructive/80",
   },
 ];
@@ -63,20 +63,20 @@ export const STATUS_OPTIONS: OptionItem[] = [
     value: "not_started",
     label: "Not Started",
     icon: CircleIcon,
-    colorClassName:
+    variantColor:
       "bg-secondary text-secondary-foreground hover:bg-secondary/80",
   },
   {
     value: "in_progress",
     label: "In Progress",
     icon: EllipsisIcon,
-    colorClassName: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
+    variantColor: "bg-alert text-alert-foreground hover:bg-alert/80",
   },
   {
     value: "completed",
     label: "Completed",
     icon: CircleCheckIcon,
-    colorClassName: "bg-green-100 text-green-800 hover:bg-green-200",
+    variantColor: "bg-success text-success-foreground hover:bg-success/80",
   },
 ];
 

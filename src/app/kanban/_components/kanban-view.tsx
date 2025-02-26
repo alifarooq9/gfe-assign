@@ -84,7 +84,7 @@ export function KanbanView() {
         throw new Error("Task not found");
       }
 
-      let optimisticTasks = [...(data?.tasks ?? [])];
+      const optimisticTasks = [...(data?.tasks ?? [])];
       optimisticTasks[optimisticTasks.findIndex((t) => t.id === active.id)] = {
         ...task,
         priority: over.id as Task["priority"],

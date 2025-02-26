@@ -34,8 +34,8 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   return (
     <div className="grid gap-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-end lg:justify-between gap-4">
+        <div className="flex items-center gap-2 flex-wrap">
           {searchFilterAccessor && (
             <DataTableSearchFilter
               searchFilterAccessor={searchFilterAccessor as string}

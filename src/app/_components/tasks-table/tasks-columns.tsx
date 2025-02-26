@@ -53,8 +53,11 @@ export const GetTaskColumns = (): Column<Task>[] => {
 
         return (
           <Badge
-            variant="secondary"
-            className={cn("capitalize gap-1.5 py-1", priority?.colorClassName)}
+            variant={"secondary"}
+            className={cn(
+              `capitalize gap-1.5 py-1 whitespace-nowrap flex-shrink-0`,
+              priority?.variantColor
+            )}
           >
             {priority?.icon && <priority.icon className="h-3.5 w-3.5" />}
             {priority?.label}
@@ -80,8 +83,11 @@ export const GetTaskColumns = (): Column<Task>[] => {
 
         return (
           <Badge
-            variant="secondary"
-            className={cn("capitalize gap-1.5 py-1", status?.colorClassName)}
+            variant={"secondary"}
+            className={cn(
+              "capitalize gap-1.5 py-1 whitespace-nowrap flex-shrink-0",
+              status?.variantColor
+            )}
           >
             {status?.icon && <status.icon className="h-3.5 w-3.5" />}
             {status?.label}

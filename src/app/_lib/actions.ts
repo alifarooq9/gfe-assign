@@ -226,14 +226,17 @@ export function addTask(params: z.infer<typeof createTaskSchema>):
     }
     const { title, priority, status, customFields } = validated.data;
 
-    const tasks =
+    const tasks: Task[] =
       localStorage.getItem("tasks") !== null && localStorage.getItem("tasks")
         ? JSON.parse(localStorage.getItem("tasks")!)
         : mock;
 
+    const lastTask = tasks[tasks.length - 1];
+    console.log(lastTask, "Last Task");
+
     // Create a new task object
     const task: Task = {
-      id: tasks.length + 1,
+      id: lastTask.id + 1,
       title,
       priority,
       status,
@@ -276,7 +279,10 @@ export function getAllCustomFields():
     }
   | { success: false; message: string } {
   try {
-    const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
+    const tasks: Task[] =
+      localStorage.getItem("tasks") !== null && localStorage.getItem("tasks")
+        ? JSON.parse(localStorage.getItem("tasks")!)
+        : mock;
     console.log(tasks);
 
     const customFields = tasks.reduce<CustomField[]>(
@@ -403,7 +409,10 @@ export function deleteTasks(
   id: string[]
 ): { success: true } | { success: false; message: string } {
   try {
-    const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") ?? "[]");
+    const tasks: Task[] =
+      localStorage.getItem("tasks") !== null && localStorage.getItem("tasks")
+        ? JSON.parse(localStorage.getItem("tasks")!)
+        : mock;
     const updatedTasks = tasks.filter(
       (task) => !id.includes(task.id.toString())
     );

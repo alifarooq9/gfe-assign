@@ -1,5 +1,6 @@
 "use client";
 
+import { useTaskMultiSelectStore } from "@/app/_lib/tasks";
 import { DEFAULTROWSSIZE } from "@/components/data-table/data-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,10 +74,13 @@ export function DataTablePagination({ maxPage }: TablePaginationProps) {
     }
   }, [rowSize, maxPage, page, setPage]);
 
+  const { selectedTasks } = useTaskMultiSelectStore();
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col items-center gap-4 justify-between md:flex-row">
       {/* Selected rows count */}
-      <p className="text-sm text-muted-foreground">0 of 10 row(s) selected</p>
+      <p className="text-sm text-muted-foreground">
+        {selectedTasks.length} of {rowSize} row(s) selected
+      </p>
 
       {/* Pagination buttons */}
       <div className="flex items-center gap-x-2">

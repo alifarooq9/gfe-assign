@@ -85,7 +85,9 @@ export function TasksTable({ searchParams }: TableViewProps) {
           case "number":
             return <span>{Number(value)}</span>;
           case "checkbox":
-            return <span>{Boolean(value) ? "Check" : "No"}</span>;
+            return (
+              <span>{value === true || value === "true" ? "Check" : "No"}</span>
+            );
           case "dateTime":
             return <span>{format(new Date(value as string), "PP")}</span>;
           default:

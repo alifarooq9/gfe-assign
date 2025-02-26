@@ -22,7 +22,7 @@ export function KanbanColumn({ option, tasks }: KanbanColumnProps) {
       <h2
         className={cn(
           "rounded-md px-4 py-3 [&_svg]:size-4 flex items-center gap-2 text-sm",
-          option.colorClassName
+          option.variantColor
         )}
       >
         <option.icon />

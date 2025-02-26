@@ -47,3 +47,15 @@ export const useTaskMultiSelectStore = create<TaskMultiSelectStore>((set) => ({
     set({ selectedTasks: [] });
   },
 }));
+
+type CreateTaskSheet = {
+  sheetOpen: boolean;
+  setSheetOpen: (params: { sheetOpen: boolean }) => void;
+};
+
+export const useCreateTaskSheetStore = create<CreateTaskSheet>((set) => ({
+  sheetOpen: false,
+  setSheetOpen: (params: { sheetOpen: boolean }) => {
+    set({ sheetOpen: params.sheetOpen });
+  },
+}));
