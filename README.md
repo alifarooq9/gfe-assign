@@ -1,7 +1,7 @@
 ---
 title: "Task Management App"
 description: "A web-based task management application built as part of the GFE assignment."
-Live_preview: [https://gfe-assign.vercel.app/](https://gfe-assign.vercel.app/)
+link: https://gfe-assign.vercel.app/
 ---
 
 # Task Management App
