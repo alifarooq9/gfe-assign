@@ -10,6 +10,9 @@ import { Task } from "@/types/task";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useEffect, useMemo } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { TerminalIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type TableViewProps = {
   searchParams: {
@@ -123,11 +126,19 @@ export function TasksTable({ searchParams }: TableViewProps) {
   }, [searchParams]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Skeleton className="w-full h-80" />;
   }
 
   if (!data) {
-    return <div>No data</div>;
+    return (
+      <Alert>
+        <TerminalIcon className="h-4 w-4" />
+        <AlertTitle>No Data Found!</AlertTitle>
+        <AlertDescription>
+          No data found with this query please try again later...
+        </AlertDescription>
+      </Alert>
+    );
   }
 
   return (

@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { Task } from "@/types/task";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function KanbanView() {
   const queryClient = useQueryClient();
@@ -103,7 +104,15 @@ export function KanbanView() {
   };
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid grid-cols-5 gap-4 min-h-[calc(100vh-12rem)]">
+        <Skeleton className="w-full h-full" />
+        <Skeleton className="w-full h-full" />
+        <Skeleton className="w-full h-full" />
+        <Skeleton className="w-full h-full" />
+        <Skeleton className="w-full h-full" />
+      </div>
+    );
   }
 
   return (
