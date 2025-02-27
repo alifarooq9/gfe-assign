@@ -104,6 +104,7 @@ The main interface utilizes a custom `DataTable` component located at `@/compone
    cd <project-directory>
   ```
 
+
 2. **Install Dependencies:**
 
   ```bash
