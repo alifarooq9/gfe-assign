@@ -34,6 +34,24 @@
 
 #### Additional Milestones
 
-- [ ] **Milestone 8** – Add undo/redo functionality.
 - [x] **Milestone 9** – Enable multiselect for bulk actions.
-- [ ] **Milestone 10** – Create a Kanban board view.
+- [x] **Milestone 10** – Create a Kanban board view.
+
+### Overview of the Solution
+
+Table view of all tasks with sorting, filtering, and pagination. is implemented using the custom `DataTable` component from `@/components/data-table/data-table`. The `DataTable` component is a powerful and flexible component that allows you to easily create a table-based interface for displaying and interacting with data.
+
+### Bounus Milestone Implementation
+
+- The bounus milestone implementation is a simple implementation of the bounus milestone requirements. It includes the following features:
+  - The bounus milestone implementation includes a Kanban board view that allows users to drag and drop tasks to change their status and priority. The Kanban board view is implemented using `@dnd-kit`
+- Multiselect for bulk actions is also implemented in the bounus milestone implementation.
+
+
+### Interestin things
+- Every filter query in passed to URL to filter the data to enable users to share the URL with others and get the same data.
+- Kanban board queries takes `1000ms` to load intentionally to show the user that the data is being loaded. but we are created optimistic updates to reduce the loading time and instantly update the UI.
+
+
+### Tech Stack
+Next.js, Tailwind CSS, TypeScript, React Query, Tailwind UI, Dnd Kit, Sonner, Lucide React, Shadcn UI

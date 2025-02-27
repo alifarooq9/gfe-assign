@@ -44,9 +44,10 @@ type KanbanRowProps = {
 };
 
 export function KanbanRow({ task }: KanbanRowProps) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: task.id,
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: task.id,
+    });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -62,14 +63,17 @@ export function KanbanRow({ task }: KanbanRowProps) {
   const { setEditTask } = useEditTaskStore();
 
   return (
-    <AlertDialog>
-      <Card
-        ref={setNodeRef}
-        style={style}
-        {...listeners}
-        {...attributes}
-        className="bg-background relative"
-      >
+    <Card
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={cn(
+        "bg-background relative flex flex-col",
+        isDragging && "z-50"
+      )}
+    >
+      <AlertDialog>
         <CardHeader className="p-4 ">
           <CardTitle className="text-sm font-medium">{task.title}</CardTitle>
 
@@ -188,23 +192,22 @@ export function KanbanRow({ task }: KanbanRowProps) {
             </div>
           ) : null}
         </CardContent>
-      </Card>
-
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete &quot;
-            {task.title}&quot; task and all its associated data.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => handleDelete(task.id)}>
-            Delete
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete &quot;
+              {task.title}&quot; task and all its associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => handleDelete(task.id)}>
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Card>
   );
 }
