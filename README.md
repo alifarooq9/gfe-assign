@@ -99,12 +99,11 @@ The main interface utilizes a custom `DataTable` component located at `@/compone
 
 1. **Clone the Repository:**
 
-   ```bash
+  ```bash
    git clone <repository-url>
    cd <project-directory>
   ```
-
-
+  
 2. **Install Dependencies:**
 
   ```bash
