@@ -205,7 +205,7 @@ export default function AddTasksSheet({
                 )}
               />
 
-              <div className="grid w-full grid-cols-2 gap-2">
+              <div className="grid w-full grid-cols-2=1 md:grid-cols-2 gap-2">
                 <FormField
                   control={form.control}
                   name="priority"
@@ -292,7 +292,7 @@ export default function AddTasksSheet({
                   {fields.map((field, index) => (
                     <div
                       key={index}
-                      className="grid grid-cols-3 gap-2 rounded-md border border-border p-3"
+                      className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-2 rounded-md border border-border p-3"
                     >
                       <FormField
                         control={form.control}
